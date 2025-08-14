@@ -1,0 +1,20 @@
+services:
+  php-apache:
+    container_name: laravel10
+    build:
+      context: .
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: php8:2
+    ports:
+      - "8011:80"
+    volumes:
+      - .:/var/www/html
+      - ./apache/logs:/var/log/apache2
+    # environment:   # Variabel lingkungan untuk konfigurasi database
+    #   DB_CONNECTION: mysql
+    #   DB_HOST: host.docker.internal
+    #   DB_PORT: 3306
+    #   DB_DATABASE: webixcloud
+    #   DB_USERNAME: root
+    #   DB_PASSWORD: password
