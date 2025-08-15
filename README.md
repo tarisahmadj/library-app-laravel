@@ -49,7 +49,7 @@ php artisan key:generate
 
 4. **Setup Database**
 
-buat database dengan nama yang di sesauikan dengan DB_DATABASE atau bisa menggunakan default dengan nama laravel
+buat database dengan nama yang di sesauikan dengan `DB_DATABASE` atau bisa menggunakan default dengan nama `laravel`
 
 Edit file `.env`:
 
