@@ -49,6 +49,8 @@ php artisan key:generate
 
 4. **Setup Database**
 
+buat database dengan nama yang di sesauikan dengan DB_DATABASE atau bisa menggunakan default dengan nama laravel
+
 Edit file `.env`:
 
 ```
@@ -77,13 +79,33 @@ php artisan tinker
 ])
 ```
 
-7. **Jalankan aplikasi**
+6. **Jalankan aplikasi**
 
 ```bash
 php artisan serve
 ```
 
 Akses: `http://localhost:8000` akan redirect ke `/admin`.
+
+---
+
+## 🐳 Jika dijalankan dengan Docker (Opsional)
+
+Jika kamu ingin menjalankan aplikasi tanpa install PHP atau Composer di lokal, cukup gunakan Docker.
+
+1. **Build image**
+
+```bash
+docker build -t php8:2 .
+```
+
+2. **Jalankan dengan docker-compose**
+
+```bash
+docker compose up -d
+```
+
+Aplikasi akan berjalan di `http://localhost:8000` atau sesuai port di `docker-compose.yml`.
 
 ---
 
@@ -107,15 +129,6 @@ GET /api/books/{id}
 
 ---
 
-## ✅ Todo selanjutnya (Roadmap)
-
-* [ ] Fitur export PDF
-* [ ] Filter kategori di dashboard
-* [ ] Grafik tren penjualan
-* [ ] Login via Google OAuth
-
----
-
 ## ❤️ Credits
 
 Developed using:
@@ -123,7 +136,7 @@ Developed using:
 * **Laravel** PHP Framework
 * **Filament v3** Admin Panel
 * Tailwind CSS, AlpineJS
-* Designed by: *\[your name]* 👨‍💻
+* Designed by: *\[Tarisahmdj]* 👨‍💻
 
 ---
 
