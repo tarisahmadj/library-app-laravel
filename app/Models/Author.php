@@ -28,12 +28,26 @@ class Author extends Model
      */
     public static function getTop10Ids(): array
     {
-        return cache()->remember('top10_author_ids', now()->addMinutes(10), function () {
-            return self::withAvg('ratings', 'score')
-                ->orderByDesc('ratings_avg_score')
-                ->limit(10)
-                ->pluck('id')
-                ->toArray();
-        });
+        return self::query()
+            ->select('id')
+            ->whereHas('ratings', fn($q) => $q->where('score', '>', 5))
+            ->withCount([
+                'ratings as votes_count' => fn($q) => $q->where('score', '>', 5)
+            ])
+            ->orderByDesc('votes_count')
+            ->take(10)
+            ->pluck('id')
+            ->toArray();
+    }
+    public static function getTop10(): \Illuminate\Support\Collection
+    {
+        return self::query()
+            ->withCount([
+                'ratings as votes_count' => fn($q) => $q->where('score', '>', 5)
+            ])
+            ->whereHas('ratings', fn($q) => $q->where('score', '>', 5))
+            ->orderByDesc('votes_count')
+            ->limit(10)
+            ->get(['id', 'name']);
     }
 }

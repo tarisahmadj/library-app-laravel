@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RatingResource extends Resource
 {
@@ -19,29 +17,30 @@ class RatingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-   public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Forms\Components\Select::make('book_id')
-                ->label('Buku')
-                ->relationship('book', 'title')
-                ->preload()
-                ->searchable()
-                ->required(),
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('book_id')
+                    ->label('Buku')
+                    ->relationship('book', 'title')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
 
-            Forms\Components\TextInput::make('score')
-                ->label('Rating')
-                ->numeric()
-                ->minValue(1)
-                ->maxValue(10)
-                ->required(),
+                Forms\Components\Radio::make('score')
+                    ->label('Rating')
+                    ->options(
+                        collect(range(1, 10))->mapWithKeys(fn($v) => [$v => $v])
+                    )
+                    ->columns(5)
+                    ->required(),
 
-            Forms\Components\Textarea::make('comment')
-                ->label('Komentar')
-                ->columnSpanFull(),
-        ]);
-}
+                Forms\Components\Textarea::make('comment')
+                    ->label('Komentar')
+                    ->columnSpanFull(),
+            ]);
+    }
 
 
     public static function table(Table $table): Table
@@ -50,6 +49,10 @@ class RatingResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('book.author.name')
+                    ->label('Author')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('score')
                     ->numeric()

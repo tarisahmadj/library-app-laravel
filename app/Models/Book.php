@@ -22,4 +22,22 @@ class Book extends Model
     { 
         return $this->hasMany(Rating::class); 
     }
+     public static function getTop10Ids(): array
+    {
+         return self::withAvg('ratings', 'score')
+        ->orderByDesc('ratings_avg_score')
+        ->limit(10)
+        ->pluck('id')
+        ->toArray();
+    }
+    public static function getTop10(): \Illuminate\Support\Collection
+    {
+        return self::query()
+            ->with('author') // optional kalau mau keluar nama author
+            ->withAvg('ratings as avg_score', 'score')
+            ->withCount(['ratings as votes_count' => fn($q) => $q->where('score','>',5)])
+            ->orderByDesc('avg_score')
+            ->limit(10)
+            ->get(['id', 'title', 'author_id']);
+    }
 }
